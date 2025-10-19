@@ -39,3 +39,38 @@
 
 # debug information files
 *.dwo
+
+##############################
+# macOS, generative-model, and FUSE ignores
+##############################
+
+# macOS system files
+.DS_Store
+.AppleDouble
+._*
+# Icon file created by Finder
+Icon\r
+# Resource forks
+__MACOSX/
+.Spotlight-V100/
+.Trashes/
+.fseventsd/
+.VolumeIcon.icns
+.DocumentRevisions-V100/
+
+# macFUSE / FUSE temporary files
+# common pattern written by FUSE implementations for open file handles
+.fuse_hidden*
+.fuse_* 
+
+# Common generative / ML model files (large binaries / checkpoints)
+# add extensions used for model checkpoints and weights
+*.ckpt
+*.safetensors
+*.pt
+*.pth
+*.bin
+
+# Python / notebook caches often produced while experimenting with models
+.ipynb_checkpoints/
+.cache/
