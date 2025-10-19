@@ -1,0 +1,1 @@
+# hpc_lab_project_2_parallel_programming_openMP
