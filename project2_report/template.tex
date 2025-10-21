@@ -14,6 +14,63 @@ This project will introduce you to parallel programming using OpenMP.
 
 \section{Parallel reduction operations using OpenMP \punkte{20}}
 
+\subsection*{Parallel Implementations}
+
+Two parallel implementations of the dot product were developed using OpenMP. The first utilizes the \texttt{reduction} clause, which efficiently aggregates partial results across threads with minimal synchronization overhead. The second employs the \texttt{critical} directive to serialize access to the shared accumulation variable, ensuring correctness but introducing significant performance penalties due to thread contention.
+
+Correctness of both implementations was verified against the serial baseline.
+
+\subsection*{Strong Scaling Analysis}
+
+Strong scaling experiments were conducted on the Rosa cluster using thread counts $t = 1, 2, 4, 8, 16, 20$ and vector sizes $N = 10^5, 10^6, 10^7, 10^8, 10^9$. Execution time was measured for both parallel strategies.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{strong_scaling_reduction.png}
+  \caption{Execution time vs. thread count for the reduction method}
+\end{figure}
+
+The reduction-based implementation demonstrates consistent performance improvements with increasing thread count. For larger vector sizes, near-linear scaling is observed up to 8 threads, with diminishing returns beyond that point due to hardware limitations and parallel overhead.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{strong_scaling_critical.png}
+  \caption{Execution time vs. thread count for the critical method}
+\end{figure}
+
+In contrast, the critical-based implementation exhibits poor scalability. Execution time increases with thread count, particularly for smaller vectors, due to excessive synchronization overhead. Even for large $N$, performance remains suboptimal compared to the reduction method.
+
+\subsection*{Parallel Efficiency Analysis}
+
+Parallel efficiency was computed as follows:
+\[
+\text{Efficiency} = \frac{\text{Speedup}}{\text{Number of Threads}}, \quad \text{Speedup} = \frac{\text{Serial Time}}{\text{Parallel Time}}
+\]
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{efficiency_reduction.png}
+  \caption{Parallel efficiency for the reduction method}
+\end{figure}
+
+The reduction method maintains high efficiency for large vector sizes. For $N \geq 10^7$, efficiency exceeds 60\% even at 20 threads, indicating effective utilization of parallel resources.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{efficiency_critical.png}
+  \caption{Parallel efficiency for the critical method}
+\end{figure}
+
+Efficiency for the critical method declines sharply with increasing thread count. This behavior is consistent across all vector sizes, confirming that the synchronization cost outweighs the benefits of parallelism.
+
+\subsection*{Discussion}
+
+The reduction clause is clearly superior in both scalability and efficiency. It minimizes synchronization overhead and scales well with increasing workload and thread count. The critical directive, while functionally correct, introduces substantial performance degradation due to serialized access.
+
+Parallelization becomes beneficial for vector sizes $N \geq 10^7$, where the computational workload is sufficient to amortize the overhead of thread management. For smaller vectors, the serial implementation remains competitive due to its simplicity and lack of overhead.
+
+In conclusion, the reduction-based parallelization is recommended for high-performance dot product computations in OpenMP. The critical-based approach should be avoided in performance-sensitive contexts.
+
 \section{The Mandelbrot set using OpenMP \punkte{20}}
 
 \section{Bug hunt \punkte{15}}
