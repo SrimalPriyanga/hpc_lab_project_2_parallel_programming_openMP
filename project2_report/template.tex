@@ -27,28 +27,32 @@ Two parallel implementations of the dot product were developed using OpenMP.
 
 Correctness of both implementations was verified against the serial baseline.
 
-
-
 \subsection*{2 Strong Scaling Analysis}
 
-Strong scaling experiments were conducted on the Rosa cluster using thread counts $t = 1, 2, 4, 8, 16, 20$ and vector sizes $N = 10^5, 10^6, 10^7, 10^8, 10^9$. Execution time was measured for both parallel strategies.
+Strong scaling tests were conducted on the Rosa cluster for both parallel versions using thread counts $t = 1, 2, 4, 8, 16, 20$ and vector sizes $N = 10^5, 10^6, 10^7, 10^8, 10^9$.
+
+\subsection*{Reduction Method}
 
 \begin{figure}[h]
-  \centering
-  \includegraphics[width=0.9\textwidth]{figures/Figure 1: Strong Scaling - Reduction Method.png}
-  \caption{Execution time vs. thread count for the reduction method}
+    \centering
+    \includegraphics[width=0.8\textwidth]{./figures/Figure 1: Strong Scaling - Reduction Method.png}
+    \caption{Strong scaling performance using the reduction method.}
 \end{figure}
 
-The reduction-based implementation demonstrates consistent performance improvements with increasing thread count. For larger vector sizes, near-linear scaling is observed up to 8 threads, with diminishing returns beyond that point due to hardware limitations and parallel overhead.
+The reduction method demonstrates consistent improvement in execution time as the number of threads increases. For larger vector sizes, scaling is nearly ideal up to 8 threads, with diminishing returns beyond that point due to hardware limitations and overhead.
+
+\subsection*{Critical Method}
 
 \begin{figure}[h]
-  \centering
-  \includegraphics[width=0.9\textwidth]{strong_scaling_critical.png}
-  \caption{Execution time vs. thread count for the critical method}
+    \centering
+    \includegraphics[width=0.8\textwidth]{./figures/Figure 2: Strong Scaling - Critical Method.png}
+    \caption{Strong scaling performance using the critical method.}
 \end{figure}
 
-In contrast, the critical-based implementation exhibits poor scalability. Execution time increases with thread count, particularly for smaller vectors, due to excessive synchronization overhead. Even for large $N$, performance remains suboptimal compared to the reduction method.
+The critical method exhibits poor scalability. Execution time increases with additional threads due to contention at the critical section, particularly for small vector sizes. For larger $N$, performance stabilizes but remains significantly inferior to the reduction method.
 
+
+\newpage
 \subsection*{Parallel Efficiency Analysis}
 
 Parallel efficiency was computed as follows:
