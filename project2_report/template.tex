@@ -14,14 +14,103 @@ This project will introduce you to parallel programming using OpenMP.
 
 \section{Parallel reduction operations using OpenMP \punkte{20}}
 
+\subsection{Dot Product}
+\subsection*{1 Parallel Implementations}
+
+Two parallel implementations of the dot product were developed using OpenMP.
+
+\begin{itemize}
+    \item \textbf{Reduction Clause:} This method uses \texttt{\#pragma omp parallel for reduction(+:alpha)} to safely accumulate partial results from each thread. It is efficient and minimizes synchronization overhead.
+    
+    \item \textbf{Critical Directive:} This method uses \texttt{\#pragma omp critical} to serialize access to the shared accumulation variable, ensuring correctness but introducing significant performance penalties due to thread contention.
+\end{itemize}
+
+Correctness of both implementations was verified against the serial baseline.
+
+\subsection*{2 Strong Scaling Analysis}
+
+Strong scaling tests were conducted on the Rosa cluster for both parallel versions using thread counts $t = 1, 2, 4, 8, 16, 20$ and vector sizes $N = 10^5, 10^6, 10^7, 10^8, 10^9$.
+
+\subsection*{Reduction Method}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./figures/Figure 1: Strong Scaling - Reduction Method.png}
+    \caption{Strong scaling performance using the reduction method.}
+\end{figure}
+
+The reduction method demonstrates consistent improvement in execution time as the number of threads increases. For larger vector sizes, scaling is nearly ideal up to 8 threads, with diminishing returns beyond that point due to hardware limitations and overhead.
+
+\subsection*{Critical Method}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./figures/Figure 2: Strong Scaling - Critical Method.png}
+    \caption{Strong scaling performance using the critical method.}
+\end{figure}
+
+The critical method exhibits poor scalability. Execution time increases with additional threads due to contention at the critical section, particularly for small vector sizes. For larger $N$, performance stabilizes but remains significantly inferior to the reduction method.
+
+\newpage
+\subsection*{3 Parallel Efficiency Analysis}
+
+Parallel efficiency was computed as:
+\[
+\text{Efficiency} = \frac{\text{Speedup}}{\text{Number of Threads}}, \quad \text{Speedup} = \frac{\text{Serial Time}}{\text{Parallel Time}}
+\]
+
+\subsection*{Reduction Method}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./figures/Figure 3: Parallel Efficiency - Reduction Method.png}
+    \caption{Parallel efficiency using the reduction method.}
+\end{figure}
+
+Efficiency remains high for small thread counts and large vector sizes. For $N \geq 10^7$, efficiency exceeds 60\% even at 20 threads, indicating effective utilization of parallel resources.
+\subsection*{Critical Method}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./figures/Figure 4: Parallel Efficiency - Critical Method.png}
+    \caption{Parallel efficiency using the critical method.}
+\end{figure}
+
+Efficiency declines sharply with increasing thread counts, particularly for small $N$. Even for $N = 10^9$, efficiency remains low due to synchronization overhead. This behavior is consistent across all vector sizes, confirming that the synchronization cost outweighs the benefits of parallelism.
+
+\newpage
+\section*{Discussion}
+
+\subsection*{OpenMP Overhead}
+
+The critical directive introduces significant overhead due to serialized access to the shared variable. In contrast, the reduction clause avoids this issue by efficiently combining partial results.
+
+\subsection*{Thread Count vs. Workload}
+
+For small vector sizes ($N \leq 10^6$), parallelization offers limited benefit, as overhead outweighs performance gains. For larger sizes ($N \geq 10^7$), multi-threading becomes advantageous, particularly when using the reduction method.
+
+\subsection*{Conclusion}
+
+The reduction method is preferred for parallel dot product computation. It demonstrates good scalability and maintains high efficiency for large workloads. The critical method should be avoided in performance-sensitive applications.
+
+
+\newpage
 \section{The Mandelbrot set using OpenMP \punkte{20}}
 
+
+\newpage
 \section{Bug hunt \punkte{15}}
 
+
+\newpage
 \section{Parallel histogram calculation using OpenMP \punkte{15}}
 
+
+\newpage
 \section{Parallel loop dependencies with OpenMP \punkte{15}}
 
+
+\newpage
 \section{Quality of the Report \punkte{15}}
 
 

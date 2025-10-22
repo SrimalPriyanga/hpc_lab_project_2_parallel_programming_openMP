@@ -55,7 +55,28 @@ int main() {
 
   //   TODO: Write parallel version (2 ways!)
   //   i.  Using reduction pragma
+  time_start = wall_time();
+  for (int iterations = 0; iterations < NUM_ITERATIONS; iterations++) {
+      alpha_parallel = 0.0;
+      #pragma omp parallel for reduction(+:alpha_parallel)
+      for (int i = 0; i < N; i++) {
+          alpha_parallel += a[i] * b[i];
+      }
+  }
+  time_red = wall_time() - time_start;
+
   //   ii. Using  critical pragma
+  time_start = wall_time();
+  for (int iterations = 0; iterations < NUM_ITERATIONS; iterations++) {
+      alpha_parallel = 0.0;
+      #pragma omp parallel for
+      for (int i = 0; i < N; i++) {
+          double temp = a[i] * b[i];
+          #pragma omp critical
+          alpha_parallel += temp;
+      }
+  }
+  time_critical = wall_time() - time_start;
 
   for (int iterations = 0; iterations < NUM_ITERATIONS; iterations++) {
     alpha_parallel = 0.0;

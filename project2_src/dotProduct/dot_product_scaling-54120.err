@@ -1,0 +1,16 @@
+dotProduct.cpp:12: warning: "N" redefined
+   12 | #define N 100000
+      | 
+<command-line>: note: this is the location of the previous definition
+dotProduct.cpp:12: warning: "N" redefined
+   12 | #define N 100000
+      | 
+<command-line>: note: this is the location of the previous definition
+dotProduct.cpp:12: warning: "N" redefined
+   12 | #define N 100000
+      | 
+<command-line>: note: this is the location of the previous definition
+dotProduct.cpp:12: warning: "N" redefined
+   12 | #define N 100000
+      | 
+<command-line>: note: this is the location of the previous definition

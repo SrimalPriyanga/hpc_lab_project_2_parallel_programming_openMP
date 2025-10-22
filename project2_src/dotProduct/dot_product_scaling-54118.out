@@ -1,0 +1,30 @@
+Loading gcc/13.2.0-gcc-8.5.0-5hqhkwo
+  Loading requirement: gcc-runtime/8.5.0-gcc-8.5.0-7fyorqa
+    gmp/6.2.1-gcc-8.5.0-lrpcvy5 mpfr/4.2.1-gcc-8.5.0-ybeybcx
+    mpc/1.3.1-gcc-8.5.0-cv2gjfw zlib-ng/2.1.6-gcc-8.5.0-ztbc5xt
+    zstd/1.5.5-gcc-8.5.0-azepnn7
+Currently Loaded Modulefiles:
+ 1) gcc-runtime/8.5.0-gcc-8.5.0-7fyorqa   5) zlib-ng/2.1.6-gcc-8.5.0-ztbc5xt  
+ 2) gmp/6.2.1-gcc-8.5.0-lrpcvy5           6) zstd/1.5.5-gcc-8.5.0-azepnn7     
+ 3) mpfr/4.2.1-gcc-8.5.0-ybeybcx          7) gcc/13.2.0-gcc-8.5.0-5hqhkwo     
+ 4) mpc/1.3.1-gcc-8.5.0-cv2gjfw          
+rm -rf dotProduct
+g++ -O3 -fopenmp dotProduct.cpp -o dotProduct
+Running with OMP_NUM_THREADS=1
+Serial execution time = 0.0116923 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0118366 sec, time using critical method 0.200774 sec
+Running with OMP_NUM_THREADS=2
+Serial execution time = 0.0117171 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00616187 sec, time using critical method 1.49551 sec
+Running with OMP_NUM_THREADS=4
+Serial execution time = 0.0117044 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.003398 sec, time using critical method 1.7763 sec
+Running with OMP_NUM_THREADS=8
+Serial execution time = 0.0117223 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0023853 sec, time using critical method 1.54239 sec
+Running with OMP_NUM_THREADS=16
+Serial execution time = 0.0117078 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00277095 sec, time using critical method 1.32814 sec
+Running with OMP_NUM_THREADS=20
+Serial execution time = 0.0117016 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.111768 sec, time using critical method 2.16583 sec

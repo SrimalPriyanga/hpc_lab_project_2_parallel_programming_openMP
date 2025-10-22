@@ -1,0 +1,116 @@
+Loading gcc/13.2.0-gcc-8.5.0-5hqhkwo
+  Loading requirement: gcc-runtime/8.5.0-gcc-8.5.0-7fyorqa
+    gmp/6.2.1-gcc-8.5.0-lrpcvy5 mpfr/4.2.1-gcc-8.5.0-ybeybcx
+    mpc/1.3.1-gcc-8.5.0-cv2gjfw zlib-ng/2.1.6-gcc-8.5.0-ztbc5xt
+    zstd/1.5.5-gcc-8.5.0-azepnn7
+Currently Loaded Modulefiles:
+ 1) gcc-runtime/8.5.0-gcc-8.5.0-7fyorqa   5) zlib-ng/2.1.6-gcc-8.5.0-ztbc5xt  
+ 2) gmp/6.2.1-gcc-8.5.0-lrpcvy5           6) zstd/1.5.5-gcc-8.5.0-azepnn7     
+ 3) mpfr/4.2.1-gcc-8.5.0-ybeybcx          7) gcc/13.2.0-gcc-8.5.0-5hqhkwo     
+ 4) mpc/1.3.1-gcc-8.5.0-cv2gjfw          
+rm -rf dotProduct
+Start: Compiling for N=100000
+Running with N=100000 and OMP_NUM_THREADS=1
+Serial execution time = 0.0502691 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0508 sec, time using critical method 0.201055 sec
+Running with N=100000 and OMP_NUM_THREADS=2
+Serial execution time = 0.0502288 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0256612 sec, time using critical method 1.47413 sec
+Running with N=100000 and OMP_NUM_THREADS=4
+Serial execution time = 0.0502413 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0131525 sec, time using critical method 1.59522 sec
+Running with N=100000 and OMP_NUM_THREADS=8
+Serial execution time = 0.0502349 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0073065 sec, time using critical method 1.74227 sec
+Running with N=100000 and OMP_NUM_THREADS=16
+Serial execution time = 0.0502324 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00521372 sec, time using critical method 2.02833 sec
+Running with N=100000 and OMP_NUM_THREADS=20
+Serial execution time = 0.0502445 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00521882 sec, time using critical method 1.5287 sec
+End: Compiling for N=100000
+--------------------------------
+Start: Compiling for N=1000000
+Running with N=1000000 and OMP_NUM_THREADS=1
+Serial execution time = 0.0502317 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0508096 sec, time using critical method 0.201051 sec
+Running with N=1000000 and OMP_NUM_THREADS=2
+Serial execution time = 0.0502174 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.025656 sec, time using critical method 1.40266 sec
+Running with N=1000000 and OMP_NUM_THREADS=4
+Serial execution time = 0.0502228 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0131719 sec, time using critical method 0.924404 sec
+Running with N=1000000 and OMP_NUM_THREADS=8
+Serial execution time = 0.0502148 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00725771 sec, time using critical method 1.35723 sec
+Running with N=1000000 and OMP_NUM_THREADS=16
+Serial execution time = 0.0502313 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0051428 sec, time using critical method 1.53713 sec
+Running with N=1000000 and OMP_NUM_THREADS=20
+Serial execution time = 0.0502491 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00534603 sec, time using critical method 2.20266 sec
+End: Compiling for N=1000000
+--------------------------------
+Start: Compiling for N=10000000
+Running with N=10000000 and OMP_NUM_THREADS=1
+Serial execution time = 0.0502858 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0508122 sec, time using critical method 0.20106 sec
+Running with N=10000000 and OMP_NUM_THREADS=2
+Serial execution time = 0.0502292 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.025646 sec, time using critical method 1.37708 sec
+Running with N=10000000 and OMP_NUM_THREADS=4
+Serial execution time = 0.0502258 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0131519 sec, time using critical method 1.67084 sec
+Running with N=10000000 and OMP_NUM_THREADS=8
+Serial execution time = 0.0502133 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00721335 sec, time using critical method 1.71994 sec
+Running with N=10000000 and OMP_NUM_THREADS=16
+Serial execution time = 0.0502366 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00516942 sec, time using critical method 1.16423 sec
+Running with N=10000000 and OMP_NUM_THREADS=20
+Serial execution time = 0.0502513 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00513288 sec, time using critical method 1.39054 sec
+End: Compiling for N=10000000
+--------------------------------
+Start: Compiling for N=100000000
+Running with N=100000000 and OMP_NUM_THREADS=1
+Serial execution time = 0.0502589 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0508379 sec, time using critical method 0.201073 sec
+Running with N=100000000 and OMP_NUM_THREADS=2
+Serial execution time = 0.0502498 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0256756 sec, time using critical method 1.44435 sec
+Running with N=100000000 and OMP_NUM_THREADS=4
+Serial execution time = 0.0502601 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0131548 sec, time using critical method 0.940227 sec
+Running with N=100000000 and OMP_NUM_THREADS=8
+Serial execution time = 0.050234 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00733323 sec, time using critical method 1.76377 sec
+Running with N=100000000 and OMP_NUM_THREADS=16
+Serial execution time = 0.0502222 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00510052 sec, time using critical method 1.25762 sec
+Running with N=100000000 and OMP_NUM_THREADS=20
+Serial execution time = 0.0502423 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00579512 sec, time using critical method 1.41148 sec
+End: Compiling for N=100000000
+--------------------------------
+Start: Compiling for N=1000000000
+Running with N=1000000000 and OMP_NUM_THREADS=1
+Serial execution time = 0.0502329 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0508299 sec, time using critical method 0.201092 sec
+Running with N=1000000000 and OMP_NUM_THREADS=2
+Serial execution time = 0.0502349 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0256585 sec, time using critical method 1.41394 sec
+Running with N=1000000000 and OMP_NUM_THREADS=4
+Serial execution time = 0.0502382 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.0131089 sec, time using critical method 1.08401 sec
+Running with N=1000000000 and OMP_NUM_THREADS=8
+Serial execution time = 0.0502328 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00736265 sec, time using critical method 1.10333 sec
+Running with N=1000000000 and OMP_NUM_THREADS=16
+Serial execution time = 0.0502577 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00513501 sec, time using critical method 1.27169 sec
+Running with N=1000000000 and OMP_NUM_THREADS=20
+Serial execution time = 0.050265 sec
+Parallel dot product = 3.33328e+13 time using reduction method = 0.00575896 sec, time using critical method 1.5364 sec
+End: Compiling for N=1000000000
+--------------------------------
