@@ -76,3 +76,9 @@ __MACOSX/
 .cache/
 project2_src/hello_omp/hello_omp
 project2_src/dotProduct/dotProduct
+project2_report/template.aux
+project2_report/template.fdb_latexmk
+project2_report/template.fls
+project2_report/template.log
+project2_report/template.out
+project2_report/template.synctex.gz
