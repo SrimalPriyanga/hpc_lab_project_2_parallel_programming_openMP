@@ -79,22 +79,38 @@ Efficiency remains high for small thread counts and large vector sizes. For $N \
 Efficiency declines sharply with increasing thread counts, particularly for small $N$. Even for $N = 10^9$, efficiency remains low due to synchronization overhead. This behavior is consistent across all vector sizes, confirming that the synchronization cost outweighs the benefits of parallelism.
 
 \newpage
-\subsection*{Discussion}
+\section*{Discussion}
 
-The reduction clause is clearly superior in both scalability and efficiency. It minimizes synchronization overhead and scales well with increasing workload and thread count. The critical directive, while functionally correct, introduces substantial performance degradation due to serialized access.
+\subsection*{OpenMP Overhead}
 
-Parallelization becomes beneficial for vector sizes $N \geq 10^7$, where the computational workload is sufficient to amortize the overhead of thread management. For smaller vectors, the serial implementation remains competitive due to its simplicity and lack of overhead.
+The critical directive introduces significant overhead due to serialized access to the shared variable. In contrast, the reduction clause avoids this issue by efficiently combining partial results.
 
-In conclusion, the reduction-based parallelization is recommended for high-performance dot product computations in OpenMP. The critical-based approach should be avoided in performance-sensitive contexts.
+\subsection*{Thread Count vs. Workload}
 
+For small vector sizes ($N \leq 10^6$), parallelization offers limited benefit, as overhead outweighs performance gains. For larger sizes ($N \geq 10^7$), multi-threading becomes advantageous, particularly when using the reduction method.
+
+\subsection*{Conclusion}
+
+The reduction method is preferred for parallel dot product computation. It demonstrates good scalability and maintains high efficiency for large workloads. The critical method should be avoided in performance-sensitive applications.
+
+
+\newpage
 \section{The Mandelbrot set using OpenMP \punkte{20}}
 
+
+\newpage
 \section{Bug hunt \punkte{15}}
 
+
+\newpage
 \section{Parallel histogram calculation using OpenMP \punkte{15}}
 
+
+\newpage
 \section{Parallel loop dependencies with OpenMP \punkte{15}}
 
+
+\newpage
 \section{Quality of the Report \punkte{15}}
 
 
