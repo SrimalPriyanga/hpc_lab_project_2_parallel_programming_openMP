@@ -14,19 +14,28 @@ This project will introduce you to parallel programming using OpenMP.
 
 \section{Parallel reduction operations using OpenMP \punkte{20}}
 
-\subsection*{Parallel Implementations}
+\subsection{Dot Product}
+\subsection*{1 Parallel Implementations}
 
-Two parallel implementations of the dot product were developed using OpenMP. The first utilizes the \texttt{reduction} clause, which efficiently aggregates partial results across threads with minimal synchronization overhead. The second employs the \texttt{critical} directive to serialize access to the shared accumulation variable, ensuring correctness but introducing significant performance penalties due to thread contention.
+Two parallel implementations of the dot product were developed using OpenMP.
+
+\begin{itemize}
+    \item \textbf{Reduction Clause:} This method uses \texttt{\#pragma omp parallel for reduction(+:alpha)} to safely accumulate partial results from each thread. It is efficient and minimizes synchronization overhead.
+    
+    \item \textbf{Critical Directive:} This method uses \texttt{\#pragma omp critical} to serialize access to the shared accumulation variable, ensuring correctness but introducing significant performance penalties due to thread contention.
+\end{itemize}
 
 Correctness of both implementations was verified against the serial baseline.
 
-\subsection*{Strong Scaling Analysis}
+
+
+\subsection*{2 Strong Scaling Analysis}
 
 Strong scaling experiments were conducted on the Rosa cluster using thread counts $t = 1, 2, 4, 8, 16, 20$ and vector sizes $N = 10^5, 10^6, 10^7, 10^8, 10^9$. Execution time was measured for both parallel strategies.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{strong_scaling_reduction.png}
+  \includegraphics[width=0.9\textwidth]{figures/Figure 1: Strong Scaling - Reduction Method.png}
   \caption{Execution time vs. thread count for the reduction method}
 \end{figure}
 
