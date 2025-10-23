@@ -93,6 +93,63 @@ For small vector sizes ($N \leq 10^6$), parallelization offers limited benefit, 
 
 The reduction method is preferred for parallel dot product computation. It demonstrates good scalability and maintains high efficiency for large workloads. The critical method should be avoided in performance-sensitive applications.
 
+\subsection*{1.2 Approximating $\pi$}
+
+The value of $\pi$ was approximated using the midpoint rule applied to the integral:
+
+\[
+\pi = \int_0^1 \frac{4}{1 + x^2} \, dx
+\]
+
+A fixed number of subintervals, $N = 10^{10}$, was used to ensure a computationally intensive workload suitable for parallel analysis. A serial version was implemented using a standard loop, followed by a parallel version using OpenMP with the \texttt{\#pragma omp parallel for reduction(+:sum)} directive. This approach was selected for its simplicity and efficiency, as it avoids locking overhead and ensures safe accumulation of partial sums across threads.
+
+Execution times were recorded for both serial and parallel versions across thread counts $t = 1, 2, 4, 8$. Table~\ref{tab:pi_scaling} summarizes the results, including calculated speedup and parallel efficiency:
+
+\begin{table}[h!]
+\centering
+\caption{Performance results for $\pi$ approximation with $N = 10^{10}$}
+\label{tab:pi_scaling}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Threads} & \textbf{Serial Time (s)} & \textbf{Parallel Time (s)} & \textbf{Speedup} & \textbf{Efficiency} \\
+\hline
+1 & 53.93037 & 53.93042 & 1.0000 & 1.0000 \\
+2 & 53.93950 & 26.97084 & 1.9999 & 1.0000 \\
+4 & 53.93071 & 13.48577 & 3.9991 & 0.9998 \\
+8 & 53.93037 & 6.743196 & 7.9977 & 0.9997 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{Speedup and Efficiency Analysis}
+
+Speedup quantifies how much faster the parallel version is compared to the serial one:
+
+\[
+\text{Speedup} = \frac{\text{Serial Time}}{\text{Parallel Time}} = \frac{53.93037}{6.743196} \approx 7.9977
+\]
+
+Using 8 threads made the program almost 8 times faster. Parallel efficiency measures how well the threads are utilized:
+
+\[
+\text{Efficiency} = \frac{\text{Speedup}}{\text{Number of Threads}} = \frac{7.9977}{8} \approx 0.9997
+\]
+
+This corresponds to approximately 99.97\% efficiency, which is excellent and indicates minimal overhead.
+
+\subsection*{Discussion}
+
+The results demonstrate near-perfect linear scaling up to 8 threads, confirming strong scaling behavior where the problem size remains constant while the number of processing units increases. The OpenMP \texttt{reduction} clause provided an efficient and scalable solution for parallelization. The task is highly parallelizable and benefits significantly from multi-threading.
+
+Figure~\ref{fig:pi_scaling_plots} illustrates the speedup and efficiency trends on a log-scaled axis:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\textwidth]{./figures/Figure 5: updated_pi_scaling_plots.png}
+\caption{Speedup and Parallel Efficiency for $\pi$ Approximation}
+\label{fig:pi_scaling_plots}
+\end{figure}
+
 
 \newpage
 \section{The Mandelbrot set using OpenMP \punkte{20}}
