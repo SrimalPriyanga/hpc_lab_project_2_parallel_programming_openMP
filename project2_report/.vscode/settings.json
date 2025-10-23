@@ -1,0 +1,5 @@
+{
+  "latex-workshop.latex.autoBuild.run": "onFileChange",
+  "latex-workshop.latex.autoBuild.delay": 1000,
+  "latex-workshop.latex.watch.usePolling": true
+}
