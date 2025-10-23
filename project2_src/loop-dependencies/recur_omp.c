@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 #include "walltime.h"
 
 int main(int argc, char *argv[]) {
@@ -17,21 +18,25 @@ int main(int argc, char *argv[]) {
   }
 
   double time_start = walltime();
-  // TODO: YOU NEED TO PARALLELIZE THIS LOOP
-  for (n = 0; n <= N; ++n) {
-    opt[n] = Sn;
-    Sn *= up;
-  }
 
-  printf("Parallel RunTime  :  %f seconds\n", walltime() - time_start);
-  printf("Final Result Sn   :  %.17g \n", Sn);
+// Parallelized loop using geometric progression
+#pragma omp parallel for firstprivate(up) lastprivate(Sn)
+  for (n = 0; n <= N; ++n)
+  {
+    opt[n] = pow(up, n);
+  }
+  Sn = opt[N]; // Final Sn value
+
+  printf("Parallel RunTime : %f seconds\n", walltime() - time_start);
+  printf("Final Result Sn : %.17g \n", Sn);
 
   double temp = 0.0;
   for (n = 0; n <= N; ++n) {
     temp += opt[n] * opt[n];
   }
-  printf("Result ||opt||^2_2 :  %f\n", temp / (double)N);
+  printf("Result \nopt\n^2_2 : %f\n", temp / (double)N);
   printf("\n");
 
+  free(opt);
   return 0;
 }
