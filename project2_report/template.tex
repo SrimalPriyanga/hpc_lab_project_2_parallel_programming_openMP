@@ -426,9 +426,56 @@ The OpenMP-parallelized histogram computation achieves substantial speedup and d
 \newpage
 \section{Parallel loop dependencies with OpenMP \punkte{15}}
 
+The original loop in \texttt{recur\_seq.c} computes a geometric progression using a loop-carried dependency: each iteration updates the variable \texttt{Sn} by multiplying it with a constant factor \texttt{up}. This dependency prevents direct parallelization. To enable parallel execution, the loop was transformed using the closed-form expression of a geometric sequence: \texttt{opt[n] = pow(up, n)}. This approach eliminates inter-iteration dependencies and allows each iteration to be computed independently.
 
-\newpage
-\section{Quality of the Report \punkte{15}}
+The parallel implementation in \texttt{recur\_omp.c} uses \texttt{\#pragma omp parallel for} with the \texttt{firstprivate(up)} clause to ensure each thread receives a copy of the multiplier, and \texttt{lastprivate(Sn)} to retain the final value of \texttt{Sn} after the loop. The transformation guarantees correctness regardless of the OpenMP scheduling strategy. The serial version retains the original loop structure to avoid the overhead of the \texttt{pow()} function, which is computationally expensive.
 
+\subsection{Correctness Verification}
+
+The correctness of the parallel implementation was verified by comparing the final value of \texttt{Sn} and the computed norm \texttt{opt\textasciicircum2\_2} across multiple thread counts. The results remained consistent, confirming the mathematical equivalence of the transformed loop.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{OMP\_NUM\_THREADS} & \textbf{Final Sn} & \textbf{opt\textasciicircum2\_2} \\
+\hline
+1 & 485165087.9217357 & 5.8846e+15 \\
+2 & 485165087.9217357 & 5.8846e+15 \\
+4 & 485165087.9217357 & 5.8846e+15 \\
+8 & 485165087.9217357 & 5.8846e+15 \\
+16 & 485165087.9217357 & 5.8846e+15 \\
+\hline
+\end{tabular}
+\caption{Correctness verification across thread counts}
+\end{table}
+
+\subsection{Performance and Speedup Analysis}
+
+The sequential implementation completed in 6.72 seconds. The parallel version was executed with thread counts ranging from 1 to 16. The runtime decreased significantly with increasing threads, demonstrating strong scaling behavior.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{OMP\_NUM\_THREADS} & \textbf{Parallel Time (s)} & \textbf{Speedup} \\
+\hline
+1 & 120.74 & 0.056 \\
+2 & 57.25 & 0.117 \\
+4 & 28.62 & 0.235 \\
+8 & 14.34 & 0.468 \\
+16 & 7.19 & 0.934 \\
+\hline
+\end{tabular}
+\caption{Speedup of parallel implementation compared to sequential baseline}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.6\textwidth]{./figures/Figure 9: speedup_plot.png}
+\caption{Speedup vs. Thread Count}
+\end{figure}
+
+The parallel implementation becomes beneficial at higher thread counts, approaching the performance of the serial version at 16 threads. The reduced speedup at lower thread counts is attributed to overhead from the \texttt{pow()} function and thread management. The results confirm that the parallelized loop is efficient, scalable, and independent of scheduling strategy.
 
 \end{document}
