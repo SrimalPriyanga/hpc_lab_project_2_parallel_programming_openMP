@@ -1,0 +1,7 @@
+Total time:                 2.43471 seconds
+Image size:                 512 x 512 = 262144 Pixels
+Total number of iterations: 505292991
+Avg. time per pixel:        9.28766e-06 seconds
+Avg. time per iteration:    4.8184e-09 seconds
+Iterations/second:          2.07538e+08
+MFlop/s:                    1660.3

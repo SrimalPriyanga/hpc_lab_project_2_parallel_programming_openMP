@@ -71,6 +71,9 @@ int main(int argc, char **argv) {
   printf("MFlop/s:                    %g\n",
          nTotalIterationsCount * 8.0 / (time_end - time_start) * 1.e-6);
 
-  png_write(pPng, "mandel1.png");
+  char filename[64];
+  sprintf(filename, "img_outputs/mandel_%ldx%ld.png", (long)IMAGE_WIDTH, (long)IMAGE_HEIGHT);
+  png_write(pPng, filename);
+
   return 0;
 }
