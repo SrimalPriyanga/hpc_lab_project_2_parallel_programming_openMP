@@ -4,6 +4,21 @@
 % Provide improved math macros (\text, etc.) used in the report
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=1in}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  captionpos=b,
+  language=C
+}
 \begin{document}
 
 
@@ -258,6 +273,106 @@ OpenMP parallelization significantly accelerates Mandelbrot computation for larg
 \newpage
 \section{Bug hunt \punkte{15}}
 
+This section documents the identification and correction of five OpenMP bugs.
+
+\subsection{Bug 1: \texttt{omp\_bug1.c}}
+
+\textbf{Problem:} Incorrect use of \texttt{\#pragma omp parallel for} followed by a block.
+
+\begin{lstlisting}[caption=Buggy Code]
+#pragma omp parallel for shared(a, b, c, chunk) private(i, tid) \
+schedule(static, chunk)
+{
+    tid = omp_get_thread_num();
+    for (i = 0; i < N; i++) {
+        c[i] = a[i] + b[i];
+        printf("tid= %d i= %d c[i]= %f\n", tid, i, c[i]);
+    }
+}
+\end{lstlisting}
+
+\textbf{Fix:} Move the loop directly after the pragma.
+
+\begin{lstlisting}[caption=Corrected Code]
+#pragma omp parallel for shared(a, b, c, chunk) private(i, tid) schedule(static, chunk)
+for (i = 0; i < N; i++) {
+    tid = omp_get_thread_num();
+    c[i] = a[i] + b[i];
+    printf("tid= %d i= %d c[i]= %f\n", tid, i, c[i]);
+}
+\end{lstlisting}
+
+\subsection{Bug 2: \texttt{omp\_bug2.c}}
+
+\textbf{Problem:} Shared variable \texttt{total} causes race conditions.
+
+\begin{lstlisting}[caption=Buggy Code]
+float total = 0.0;
+#pragma omp parallel
+{
+    #pragma omp for schedule(dynamic, 10)
+    for (i = 0; i < 1000000; i++)
+        total += i * 1.0;
+}
+\end{lstlisting}
+
+\textbf{Fix:} Use OpenMP reduction clause.
+
+\begin{lstlisting}[caption=Corrected Code]
+float total = 0.0;
+#pragma omp parallel for reduction(+:total) schedule(dynamic, 10)
+for (i = 0; i < 1000000; i++) {
+    total += i * 1.0;
+}
+\end{lstlisting}
+
+\subsection{Bug 3: \texttt{omp\_bug3.c}}
+
+\textbf{Problem:} Large array \texttt{c[N]} declared private causes stack overflow.
+
+\begin{lstlisting}[caption=Buggy Code]
+#pragma omp parallel private(c, i, tid, section)
+\end{lstlisting}
+
+\textbf{Fix:} Declare \texttt{c} as shared.
+
+\begin{lstlisting}[caption=Corrected Code]
+#pragma omp parallel shared(c) private(i, tid, section)
+\end{lstlisting}
+
+\subsection{Bug 4: \texttt{omp\_bug4.c}}
+
+\textbf{Problem:} Large 2D array \texttt{a[N][N]} declared private causes segmentation fault.
+
+\begin{lstlisting}[caption=Buggy Code]
+#pragma omp parallel shared(nthreads) private(i, j, tid, a)
+\end{lstlisting}
+
+\textbf{Fix:} Make \texttt{a} shared.
+
+\begin{lstlisting}[caption=Corrected Code]
+#pragma omp parallel shared(nthreads, a) private(i, j, tid)
+\end{lstlisting}
+
+\subsection{Bug 5: \texttt{omp\_bug5.c}}
+
+\textbf{Problem:} Deadlock due to inconsistent locking order.
+
+\begin{lstlisting}[caption=Buggy Code]
+omp_set_lock(&locka);
+// ...
+omp_set_lock(&lockb);
+\end{lstlisting}
+
+\textbf{Fix:} Ensure consistent locking order in both threads.
+
+\begin{lstlisting}[caption=Corrected Code]
+omp_set_lock(&locka);
+omp_set_lock(&lockb);
+// ...
+omp_unset_lock(&lockb);
+omp_unset_lock(&locka);
+\end{lstlisting}
 
 \newpage
 \section{Parallel histogram calculation using OpenMP \punkte{15}}
