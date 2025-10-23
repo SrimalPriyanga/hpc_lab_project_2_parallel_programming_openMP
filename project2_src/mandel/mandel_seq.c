@@ -33,6 +33,15 @@ int main(int argc, char **argv) {
       int n = 0;
       // TODO
       // >>>>>>>> CODE IS MISSING
+      while ((x2 + y2 <= 4.0) && (n < MAX_ITERS))
+      {
+             y = 2 * x * y + cy;
+             x = x2 - y2 + cx;
+             x2 = x * x;
+             y2 = y * y;
+             n++;
+      }
+      nTotalIterationsCount += n;
 
       // <<<<<<<< CODE IS MISSING
       // n indicates if the point belongs to the mandelbrot set
@@ -62,6 +71,6 @@ int main(int argc, char **argv) {
   printf("MFlop/s:                    %g\n",
          nTotalIterationsCount * 8.0 / (time_end - time_start) * 1.e-6);
 
-  png_write(pPng, "mandel.png");
+  png_write(pPng, "mandel1.png");
   return 0;
 }
