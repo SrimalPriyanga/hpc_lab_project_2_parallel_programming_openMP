@@ -377,6 +377,51 @@ omp_unset_lock(&locka);
 \newpage
 \section{Parallel histogram calculation using OpenMP \punkte{15}}
 
+\subsection{Overview}
+This section focuses on parallelizing a histogram computation over a large vector of integers using OpenMP. The vector contains $10^9$ elements, each in the range $[0, 15]$, and the histogram consists of 16 bins. The goal is to implement a thread-safe parallel version, benchmark its performance, and analyze strong scaling behavior.
+
+\subsection{Implementation}
+The serial version of the histogram is implemented in \texttt{hist\_seq.cpp}, where each element in the vector increments the corresponding bin in a shared histogram array. The parallel version in \texttt{hist\_omp.cpp} uses OpenMP with thread-local histograms to avoid race conditions and false sharing.
+
+Each thread maintains its own local histogram, which is merged into the global histogram after the parallel region. This approach ensures correctness and improves performance by avoiding concurrent writes to shared memory.
+
+\subsection{Benchmark Results}
+The serial version executed in 0.83237 seconds. The parallel version was tested with increasing thread counts using the Rosa cluster. The results are shown in Table~\ref{tab:scaling} and Figure~\ref{fig:scaling}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Threads} & \textbf{Time (s)} & \textbf{Speedup} & \textbf{Efficiency (\%)} \\
+\hline
+1   & 0.8324 & 1.00  & 100.0 \\
+2   & 0.8137 & 1.02  & 51.0  \\
+4   & 0.3875 & 2.15  & 53.7  \\
+8   & 0.2456 & 3.39  & 42.4  \\
+16  & 0.2357 & 3.53  & 22.1  \\
+32  & 0.1646 & 5.06  & 15.8  \\
+64  & 0.1315 & 6.33  & 9.9   \\
+\hline
+\end{tabular}
+\caption{Strong Scaling Results: Speedup and Parallel Efficiency of Histogram Computation}
+\label{tab:scaling}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{./figures/Figure 8: strong_scaling_plot.png}
+\caption{Strong Scaling Plot: Execution Time vs Number of Threads (log scale)}
+\label{fig:scaling}
+\end{figure}
+
+\subsection{Performance Analysis}
+The parallel implementation shows strong scaling up to 16–32 threads, with diminishing returns beyond that. Speedup improves significantly with thread count, but parallel efficiency drops due to increased overhead and memory contention.
+
+False sharing was avoided by using thread-local histograms. Each thread writes to its own memory space, and results are merged after the parallel region. This strategy eliminates the need for synchronization primitives like \texttt{\#pragma omp critical}, improving both correctness and performance.
+
+\subsection{Conclusion}
+The OpenMP-parallelized histogram computation achieves substantial speedup and demonstrates effective strong scaling. The use of thread-local data structures ensures thread safety and avoids false sharing, making the implementation both efficient and scalable.
+
 
 \newpage
 \section{Parallel loop dependencies with OpenMP \punkte{15}}
