@@ -1,0 +1,34 @@
+mandel_parallel.c: In function 'main':
+mandel_parallel.c:20:5: error: unknown type name 'pngwriter_t'
+   20 |     pngwriter_t *pPng = png_create(IMAGE_WIDTH, IMAGE_HEIGHT);
+      |     ^~~~~~~~~~~
+mandel_parallel.c:20:25: warning: initialization of 'int *' from incompatible pointer type 'png_data *' [-Wincompatible-pointer-types]
+   20 |     pngwriter_t *pPng = png_create(IMAGE_WIDTH, IMAGE_HEIGHT);
+      |                         ^~~~~~~~~~
+mandel_parallel.c:49:22: warning: passing argument 1 of 'png_plot' from incompatible pointer type [-Wincompatible-pointer-types]
+   49 |             png_plot(pPng, i, j, r, g, b);
+      |                      ^~~~
+      |                      |
+      |                      int *
+In file included from mandel_parallel.c:6:
+pngwriter.h:15:25: note: expected 'png_data *' but argument is of type 'int *'
+   15 | void png_plot(png_data *pData, int x, int y, int r, int g, int b);
+      |               ~~~~~~~~~~^~~~~
+mandel_parallel.c:76:15: warning: passing argument 1 of 'png_write' from incompatible pointer type [-Wincompatible-pointer-types]
+   76 |     png_write(pPng, filename);
+      |               ^~~~
+      |               |
+      |               int *
+pngwriter.h:16:26: note: expected 'png_data *' but argument is of type 'int *'
+   16 | void png_write(png_data *pData, char *szFileName);
+      |                ~~~~~~~~~~^~~~~
+mandel_parallel.c:78:5: warning: implicit declaration of function 'png_destroy'; did you mean 'png_error'? [-Wimplicit-function-declaration]
+   78 |     png_destroy(pPng);
+      |     ^~~~~~~~~~~
+      |     png_error
+make: *** [Makefile:17: mandel_parallel.o] Error 1
+/var/spool/slurmd/job54776/slurm_script: line 20: ./mandel_parallel: No such file or directory
+/var/spool/slurmd/job54776/slurm_script: line 20: ./mandel_parallel: No such file or directory
+/var/spool/slurmd/job54776/slurm_script: line 20: ./mandel_parallel: No such file or directory
+/var/spool/slurmd/job54776/slurm_script: line 20: ./mandel_parallel: No such file or directory
+/var/spool/slurmd/job54776/slurm_script: line 20: ./mandel_parallel: No such file or directory
