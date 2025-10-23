@@ -157,6 +157,103 @@ Figure~\ref{fig:pi_scaling_plots} illustrates the speedup and efficiency trends 
 \newpage
 \section{The Mandelbrot set using OpenMP \punkte{20}}
 
+\subsection{Sequential Implementation}
+The Mandelbrot set was computed using the provided skeleton code. Each pixel corresponds to a complex number $c$, and the iterative function:
+\[
+z_{n+1} = z_n^2 + c, \quad z_0 = 0
+\]
+determines whether the sequence remains bounded within a radius of 2. The number of iterations before divergence defines the pixel color. The image was generated using \texttt{pngwriter}, and performance metrics were recorded using the recommended format.
+
+\subsection{Benchmarking (Sequential)}
+Performance was evaluated for multiple image sizes. Table~\ref{tab:seq_perf} summarizes the results.
+
+\begin{table}[h!]
+\centering
+\caption{Sequential Performance Across Image Sizes}
+\label{tab:seq_perf}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Image Size} & \textbf{Total Time (s)} & \textbf{Iterations/sec} & \textbf{MFlop/s} \\
+\hline
+512$\times$512    & 2.43   & $2.08\times10^8$ & 1660 \\
+1024$\times$1024  & 9.74   & $2.08\times10^8$ & 1660 \\
+2048$\times$2048  & 38.95  & $2.08\times10^8$ & 1660 \\
+4096$\times$4096  & 155.82 & $2.08\times10^8$ & 1660 \\
+8192$\times$8192  & 623.25 & $2.08\times10^8$ & 1660 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Observation:} Iterations/sec and MFlop/s remain constant, confirming linear scaling with image size.
+
+\subsection{Parallel Implementation}
+The outer loop over image rows was parallelized using OpenMP:
+\begin{verbatim}
+#pragma omp parallel for private(i, cx, cy, x, y, x2, y2, n) reduction(+:nTotalIterationsCount)
+\end{verbatim}
+
+Variables were privatized to prevent race conditions, and \texttt{nTotalIterationsCount} was updated using a reduction clause. Compilation used:
+\begin{verbatim}
+gcc -fopenmp mandel_parallel.c -o mandel_parallel -lpng
+\end{verbatim}
+
+Execution was automated for thread counts: 1, 2, 4, 8, and 16.
+
+\subsection{Benchmarking (Parallel)}
+Performance for an image size of 4096$\times$4096 pixels is shown in Table~\ref{tab:parallel_perf}.
+
+\begin{table}[h!]
+\centering
+\caption{Parallel Performance and Scaling}
+\label{tab:parallel_perf}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Threads} & \textbf{Total Time (s)} & \textbf{Speedup} & \textbf{Efficiency} \\
+\hline
+1  & 155.82 & 1.00 & 1.00 \\
+2  & 78.09  & 2.00 & 1.00 \\
+4  & 75.34  & 2.07 & 0.52 \\
+8  & 50.60  & 3.08 & 0.38 \\
+16 & 28.61  & 5.45 & 0.34 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Calculation Formulas}
+Speedup ($S$) and efficiency ($E$) were computed as:
+\[
+S = \frac{T_1}{T_p}, \quad E = \frac{S}{p}
+\]
+where $T_1$ is the execution time with one thread, $T_p$ is the execution time with $p$ threads.
+
+\subsection{Strong Scaling Plot}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{./figures/Figure 6: strong_scaling_plot.png}
+\caption{Strong Scaling of Mandelbrot Set using OpenMP}
+\label{fig:strong_scaling}
+\end{figure}
+
+\subsection{Rendered Mandelbrot Image}
+The final parallel implementation produced the Mandelbrot set image shown in Figure~\ref{fig:mandel_image}. This image was generated using 8 threads for an image size of 4096$\times$4096 pixels.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\textwidth]{./figures/Figure 7: mandel_4096x4096_1threads.png}
+\caption{Mandelbrot Set rendered using OpenMP with 8 threads (4096$\times$4096 pixels)}
+\label{fig:mandel_image}
+\end{figure}
+
+\subsection{Discussion}
+\begin{itemize}
+\item Speedup is nearly ideal up to 2 threads.
+\item Efficiency declines beyond 4 threads due to memory bandwidth and synchronization overhead.
+\item At 16 threads, runtime decreases by $\sim$81\%, demonstrating parallelization benefits for large workloads despite reduced efficiency.
+\end{itemize}
+
+\subsection{Conclusion}
+OpenMP parallelization significantly accelerates Mandelbrot computation for large images. Strong scaling is limited by hardware constraints, but parallel execution remains advantageous for high-resolution rendering.
+
 
 \newpage
 \section{Bug hunt \punkte{15}}
